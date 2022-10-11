@@ -2,9 +2,15 @@ from vosk import Model, KaldiRecognizer
 import os
 import pyaudio
 import json
+import random
 
 import tts.tts as tts
+import answers
 
+def whishMe():
+    tts.speak("Bom dia!")
+
+whishMe()
 
 # TTS - Text to Speech
 #text = "Olá, meu nome é Istáius. No que posso te ajudar?"
@@ -18,15 +24,27 @@ p = pyaudio.PyAudio()
 stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=2048)
 stream.start_stream()
 
-while True:
-    data = stream.read(2048)
-    if len(data) == 0:
-        break
-    if rec.AcceptWaveform(data):
-        result = rec.Result()
-        result = json.loads(result)
+WAKEUP = ["pedro", "pietro", "pedra"]
 
-        if result is not None:
-            text = result['text']
+def listen():
+    while True:
+        data = stream.read(2048)
+
+        if rec.AcceptWaveform(data):
+            result = rec.Result()
+            result = json.loads(result)
+
+            if result is not None:
+                text = result['text']
+                return text
+
+while True:
+    print("Escutando...")
+    text = listen()
+
+    for item in WAKEUP:
+        if text.count(item) > 0:
+            tts.speak(random.choice(answers.TAKECOMMAND))
+            text = listen()
             print(text)
             tts.speak(text)
