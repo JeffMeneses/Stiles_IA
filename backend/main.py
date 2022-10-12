@@ -34,7 +34,8 @@ while True:
     for item in WAKEUP:
         if text.count(item) > 0:
             tts.speak(random.choice(answers.TAKECOMMAND))
+
+            print("Escutando...")
             text = asr.listen()
             print(text)
-            #tts.speak(text)
             executeCommand(text)

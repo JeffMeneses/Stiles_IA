@@ -8,6 +8,5 @@ audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
 speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
 
 def listen():
-    print("Escutando...")
     speech_recognition_result = speech_recognizer.recognize_once_async().get()
     return speech_recognition_result.text
