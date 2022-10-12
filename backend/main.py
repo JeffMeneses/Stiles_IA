@@ -3,48 +3,41 @@ import os
 import pyaudio
 import json
 import random
+import datetime
 
 import tts.tts as tts
+import asr.asr as asr
 import answers
 
 def whishMe():
-    tts.speak("Bom dia!")
+    hour = int(datetime.datetime.now().hour)
+    greeting = ""
+    if hour>=0 and hour<12:
+        greeting = "Bom dia."
+
+    elif hour>=12 and hour<18:
+        greeting = "Boa tarde."
+
+    else:
+        greeting = "Boa noite."
+    tts.speak(greeting+" Eu sou o Istáius, se precisar de algo é só me chamar pelo nome.")
 
 whishMe()
 
-# TTS - Text to Speech
-#text = "Olá, meu nome é Istáius. No que posso te ajudar?"
-#tts.speak(text)
+# ASR - Automated Speech Recognition
+WAKEUP = ["Stiles", "Stylus", "Stairs"]
 
-# ASR - Automated Speech Recognition 
-model = Model("model")
-rec = KaldiRecognizer(model, 16000)
-
-p = pyaudio.PyAudio()
-stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=2048)
-stream.start_stream()
-
-WAKEUP = ["pedro", "pietro", "pedra"]
-
-def listen():
-    while True:
-        data = stream.read(2048)
-
-        if rec.AcceptWaveform(data):
-            result = rec.Result()
-            result = json.loads(result)
-
-            if result is not None:
-                text = result['text']
-                return text
+def executeCommand(text):
+    if text == 'qual é o seu nome' or 'qual é seu nome':
+        tts.speak(random.choice(answers.MYNAME))
 
 while True:
-    print("Escutando...")
-    text = listen()
-
+    text = asr.listen()
+    print(text)
     for item in WAKEUP:
         if text.count(item) > 0:
             tts.speak(random.choice(answers.TAKECOMMAND))
-            text = listen()
+            text = asr.listen()
             print(text)
-            tts.speak(text)
+            #tts.speak(text)
+            executeCommand(text)
