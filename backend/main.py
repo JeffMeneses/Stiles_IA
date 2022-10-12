@@ -1,7 +1,3 @@
-from vosk import Model, KaldiRecognizer
-import os
-import pyaudio
-import json
 import random
 import datetime
 
@@ -24,12 +20,13 @@ def whishMe():
 
 whishMe()
 
-# ASR - Automated Speech Recognition
-WAKEUP = ["Stiles", "Stylus", "Stairs"]
-
+# Temporary function, it'll be removed soon
 def executeCommand(text):
     if text == 'qual é o seu nome' or 'qual é seu nome':
         tts.speak(random.choice(answers.MYNAME))
+
+# ASR - Automated Speech Recognition
+WAKEUP = ["Stiles", "Stylus", "Stairs"]
 
 while True:
     text = asr.listen()
