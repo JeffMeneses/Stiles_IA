@@ -1,0 +1,21 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - Oi
+    - Olá
+    - Bom dia
+    - Boa tarde
+    - Boa noite
+
+- intent: whoAreYou
+  examples: |
+    - Qual é o seu nome?
+    - Me diga seu nome
+    - Quem é você?
+
+- intent: openApp
+  examples: |
+    - Abrir a [Calculadora](appName)
+    - Abra o [Bloco de notas](appName)
