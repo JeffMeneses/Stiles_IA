@@ -1,0 +1,18 @@
+version: "3.1"
+
+rules:
+
+- rule: Say 'Hi' any the user greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Say its name when the user asks
+  steps:
+  - intent: whoAreYou
+  - action: utter_whoAreYou
+
+- rule: Open a requested app
+  steps:
+  - intent: openApp
+  - action: utter_openApp

@@ -1,0 +1,14 @@
+#### This file contains tests to evaluate that your bot behaves as expected.
+#### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
+
+stories:
+- story: greet and ask its name
+- steps:
+  - user: |
+      Oi
+    intent: greet
+  - action: utter_greet
+  - user: |
+      Quem é você?
+    intent: whoAreYou
+  - action: utter_whoAreYou

@@ -1,9 +1,12 @@
 import random
 import datetime
 
-import tts.tts as tts
+from regex import D
+
+import tts.tts_alternative_2 as tts
 import asr.asr as asr
 import answers
+import IA
 
 def whishMe():
     hour = int(datetime.datetime.now().hour)
@@ -21,14 +24,21 @@ def whishMe():
 whishMe()
 
 # Temporary function, it'll be removed soon
-def executeCommand(text):
-    if text == 'qual é o seu nome' or 'qual é seu nome':
-        tts.speak(random.choice(answers.MYNAME))
+def executeCommand(intent):
+    if intent["goal"] == 'greet':
+        tts.speak(random.choice(answers.GREET))
+    elif intent["goal"] == 'whoAreYou':
+        tts.speak(random.choice(answers.WHOAMI))
+    elif intent["goal"] == 'openApp':
+        for item in intent["features"]:
+            if item["name"] == "appName":
+                tts.speak(f"Ok, estou abrindo o aplicativo {item['value']} pra você")
 
 # ASR - Automated Speech Recognition
 WAKEUP = ["Stiles", "Stylus", "Stairs"]
 
 while True:
+    print("Escutando...")
     text = asr.listen()
     print(text)
     for item in WAKEUP:
@@ -38,4 +48,6 @@ while True:
             print("Escutando...")
             text = asr.listen()
             print(text)
-            executeCommand(text)
+
+            intent = IA.evaluateIntent(text)
+            executeCommand(intent)
